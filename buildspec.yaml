@@ -2,13 +2,6 @@ version: 0.2
  
 phases:
  
-  install:
-    commands:
-      - echo Installing kubectl...
-      - curl -LO https://dl.k8s.io/release/v1.34.9/bin/linux/amd64/kubectl
-      - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-      - kubectl version --client
- 
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -29,17 +22,11 @@ phases:
       - echo Pushing Docker image to ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:latest
- 
-      - echo Connecting to EKS...
-      - aws eks update-kubeconfig --region ap-south-1 --name brain-tasks-cluster
- 
-      - echo Deploying image to EKS...
-      - kubectl set image deployment/brain-tasks-app brain-tasks-app=$REPOSITORY_URI:$IMAGE_TAG
- 
-      - echo Waiting for deployment rollout...
-      - kubectl rollout status deployment/brain-tasks-app --timeout=300s
- 
-      - echo Deployment completed successfully!
-      - kubectl get pods
-      - kubectl get deployment brain-tasks-app
+      - echo Docker image pushed successfully
       - echo Build completed on `date`
+ 
+artifacts:
+  files:
+    - deployment.yaml
+    - service.yaml
+ 
