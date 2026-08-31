@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: brain-tasks-app
-          image: $IMAGE_URI
+          image: #{BuildVariables.IMAGE_URI}
           ports:
             - containerPort: 80
           resources:
