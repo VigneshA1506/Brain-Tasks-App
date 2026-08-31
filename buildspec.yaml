@@ -3,12 +3,14 @@ version: 0.2
 phases:
  
   pre_build:
-    commands:
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 675628601405.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=675628601405.dkr.ecr.ap-south-1.amazonaws.com/brain-tasks-app
-      - IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
-      - echo Image tag is $IMAGE_TAG
+  commands:
+    - echo Logging in to Amazon ECR...
+    - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 675628601405.dkr.ecr.ap-south-1.amazonaws.com
+    - REPOSITORY_URI=675628601405.dkr.ecr.ap-south-1.amazonaws.com/brain-tasks-app
+    - IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
+    - IMAGE_URI=$REPOSITORY_URI:$IMAGE_TAG
+    - echo Image tag is $IMAGE_TAG
+    - echo Image URI is $IMAGE_URI
  
   build:
     commands:
